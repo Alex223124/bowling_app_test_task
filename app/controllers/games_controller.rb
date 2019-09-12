@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @service = Services::Games::CreateGame.new(game_params)
+    @service = Services::Games::Create.new(game_params)
     @service.call
 
     respond_to do |format|
