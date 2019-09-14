@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<%= form_with(model: @step, local: true, controller: :steps, action: :update, method: :patch) do |form| %>
+  <% if step.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(step.errors.count, "error") %> prohibited this game from being saved:</h2>
+
+      <ul>
+        <% step.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>################################################
+  <p><%=step.game.title %>
+
+  <p>################################################
+  <p>Player: <%=step.player.name%>
+  <p>Frame: <%=step.frame.number %>
+  <p>Throw: <% if step.throw.is_first_throw_in_frame? %>
+                  1
+            <% else %>
+                  2
+            <% end %>
+
+  <div class="field">
+    Enter the number of pins you knocked down (from 0 to 10).
+    <%= form.label :number_of_knocked_down_pins %>
+    <%= form.number_field :number_of_knocked_down_pins, min: 0, max: 10, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Mark the throw" %>
+  </div>
+<% end %>
