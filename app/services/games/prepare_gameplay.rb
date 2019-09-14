@@ -5,7 +5,8 @@ class Services::Games::PrepareGameplay
 
   def initialize(game)
     @game = game
-    @steps_counter = 0
+    @steps_counter = 1
+    @frames_counter = 1
   end
 
   def prepare
@@ -21,11 +22,13 @@ class Services::Games::PrepareGameplay
         build_throws(frame)
         build_steps(frame.throws)
       end
+      increment_frame_counter
     end
+    clear_frame_counter
   end
 
   def build_frame(player)
-    player.frames.create!(type: "basic_ten_frames")
+    player.frames.create!(type: "basic_ten_frames", number: @frames_counter)
   end
 
   def build_throws(frame)
@@ -36,8 +39,21 @@ class Services::Games::PrepareGameplay
 
   def build_steps(throws)
     throws.each do |throw|
-      throw.create_step!(game:@game, position: @steps_counter+=1)
+      throw.create_step!(game:@game, position: @steps_counter)
+      increment_step_counter
     end
+  end
+
+  def increment_frame_counter
+    @frames_counter += 1
+  end
+
+  def increment_step_counter
+    @steps_counter += 1
+  end
+
+  def clear_frame_counter
+    @frames_counter = 0
   end
 
 end
