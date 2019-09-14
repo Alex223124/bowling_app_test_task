@@ -17,7 +17,6 @@ class Services::Games::PrepareGameplay
   def build_gameplay
     BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER.times do
       @game.players.each do |player|
-        # Фрейм 1 Бросок 1 Степ 1 @counter+=1 Бросок 2 Степ 2 @counter+=2
         frame = build_frame(player)
         build_throws(frame)
         build_steps(frame.throws)
