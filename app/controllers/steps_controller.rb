@@ -9,17 +9,19 @@ class StepsController < ApplicationController
 
 
   def update
-    Services::Steps::Update.new(@step, step_params).call
+    @update = Services::Steps::Update.new(@step, step_params)
+    @update.call
 
-    respond_to do |format|
-      if @game.update(step_params)
-        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-        format.json { render :show, status: :ok, location: @game }
-      else
-        format.html { render :edit }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
-      end
+    if @step.frame.is_last_basic_frame?
+      @prepare_serivce = Services::Games::Gameplay::PrepareBonus.new(@step.frame)
+      @prepare_serivce.call
     end
+
+    flash[:success] = "Success!"
+    redirect_to action: :current, game_id: @step.game.id
+  rescue => e
+    flash[:error] = "Something went wrong. Please, write your result again. Error: #{e}"
+    redirect_to action: :current, game_id: @step.game.id
   end
 
   private
