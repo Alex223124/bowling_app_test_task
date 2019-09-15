@@ -5,13 +5,11 @@ class GamesController < ApplicationController
   end
 
   def create
-    @service = Services::Games::PrepareBase.new(@service.game)
-    @service.call
+    @create = Services::Games::Create.new(game_params)
+    @create.call
+    Services::Games::Gameplay::PrepareBase.new(@create.game).call
 
-    if @service.game.persisted?
-      redirect_to controller: :steps, action: :current, game_id: @service.game.id
-    end
-
+    redirect_to controller: :steps, action: :current, game_id: @create.game.id
   rescue LessThenTwoPlayers => e
     flash[:error] = e.message
     redirect_to action: :new, notice: e.message
