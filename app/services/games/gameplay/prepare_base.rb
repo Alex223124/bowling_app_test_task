@@ -1,4 +1,4 @@
-class Services::Games::PrepareGameplay
+class Services::Games::PrepareBase
 
   BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER = 10
   BASIC_AMOUT_OF_THROWS_FOR_SINGLE_FRAME = 2
