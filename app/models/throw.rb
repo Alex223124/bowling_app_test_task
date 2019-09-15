@@ -26,7 +26,9 @@ class Throw < ApplicationRecord
   end
 
   def is_strike?
-    (number_of_knocked_down_pins == AMOUNT_OF_KNOCKED_DOWN_PINS_FOR_STRIKE) && is_first_throw_in_frame?
+    (number_of_knocked_down_pins == AMOUNT_OF_KNOCKED_DOWN_PINS_FOR_STRIKE) &&
+    is_first_throw_in_frame? &&
+    frame.number != Frame::BONUS_FRAME_NUMBER
   end
 
   def is_first_throw_in_frame?
