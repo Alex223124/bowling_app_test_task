@@ -1,5 +1,5 @@
 class Point < ApplicationRecord
 
-  belong_to :step
+  belongs_to :step
 
 end
