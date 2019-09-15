@@ -25,6 +25,7 @@ class Services::Games::Gameplay::PrepareBase
           frame = build_frame(player, TYPE_OF_BASIC_FRAME)
           build_throws(frame)
           build_steps(frame.throws)
+          frame.throws.each { |throw| build_points(throw.step) }
         end
         increment_frame_counter
       end
@@ -42,6 +43,10 @@ class Services::Games::Gameplay::PrepareBase
 
   def clear_frame_counter
     @frames_counter = 0
+  end
+
+  def build_points(step)
+    step.create_point!
   end
 
   protected
