@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @service = Services::Games::PrepareBase.new(@service.game).call
+    @service = Services::Games::PrepareBase.new(@service.game)
     @service.call
 
     if @service.game.persisted?
