@@ -12,6 +12,7 @@ class GamesController < ApplicationController
     if @service.game.persisted?
       redirect_to controller: :steps, action: :current, game_id: @service.game.id
     end
+
   rescue LessThenTwoPlayers => e
     flash[:error] = e.message
     redirect_to action: :new, notice: e.message
