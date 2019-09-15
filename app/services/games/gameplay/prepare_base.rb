@@ -1,7 +1,7 @@
 class Services::Games::Gameplay::PrepareBase
 
   BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER = 10
-  BASIC_AMOUT_OF_THROWS_FOR_SINGLE_FRAME = 2
+  BASIC_AMOUNT_OF_THROWS_FOR_SINGLE_FRAME = 2
   TYPE_OF_BASIC_FRAME = "basic_ten_frames".freeze
   FIRST_STEP_POSITION = 1
   FIRST_FRAME_NUMBER = 1
@@ -56,7 +56,7 @@ class Services::Games::Gameplay::PrepareBase
   end
 
   def build_throws(frame)
-    BASIC_AMOUT_OF_THROWS_FOR_SINGLE_FRAME.times do
+    BASIC_AMOUNT_OF_THROWS_FOR_SINGLE_FRAME.times do
       frame.throws.create!
     end
   end
