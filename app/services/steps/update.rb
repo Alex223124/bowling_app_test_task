@@ -1,14 +1,12 @@
 class Services::Steps::Update
 
   def initialize(step, step_params)
-    binding.pry
     @step = step
     @throw = step.throw
     @params = step_params
   end
 
   def call
-    binding.pry
     ActiveRecord::Base.transaction do
       @throw.mark_throw_result(@params[:number_of_knocked_down_pins])
 
