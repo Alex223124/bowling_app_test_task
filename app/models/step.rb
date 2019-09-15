@@ -2,6 +2,7 @@ class Step < ApplicationRecord
 
   belongs_to :game
   has_one :throw
+  has_one :point
 
 
   def next
