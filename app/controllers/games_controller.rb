@@ -13,7 +13,11 @@ class GamesController < ApplicationController
       redirect_to controller: :steps, action: :current, game_id: @service.game.id
     end
   rescue LessThenTwoPlayers => e
-     redirect_to action: :new, notice: e.message
+    flash[:error] = e.message
+    redirect_to action: :new, notice: e.message
+  rescue => e
+    flash[:error] = e.message
+    redirect_to action: :new
   end
 
   private
