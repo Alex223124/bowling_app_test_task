@@ -7,7 +7,7 @@ class GamesController < ApplicationController
   def create
     @service = Services::Games::Create.new(game_params)
     @service.call
-    Services::Games::PrepareBase.new(@service.game).prepare
+    Services::Games::PrepareBase.new(@service.game).call
 
     if @service.game.persisted?
       redirect_to controller: :steps, action: :current, game_id: @service.game.id
