@@ -1,12 +1,15 @@
-class Services::Games::PrepareBase
+class Services::Games::Gameplay::PrepareBase
 
   BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER = 10
   BASIC_AMOUT_OF_THROWS_FOR_SINGLE_FRAME = 2
+  TYPE_OF_BASIC_FRAME = "basic_ten_frames".freeze
+  FIRST_STEP_POSITION = 1
+  FIRST_FRAME_NUMBER = 1
 
   def initialize(game)
     @game = game
-    @steps_counter = 1
-    @frames_counter = 1
+    @steps_counter = FIRST_STEP_POSITION
+    @frames_counter = FIRST_FRAME_NUMBER
   end
 
   def call
@@ -19,7 +22,7 @@ class Services::Games::PrepareBase
     ActiveRecord::Base.transaction do
       BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER.times do
         @game.players.each do |player|
-          frame = build_frame(player, "basic_ten_frames")
+          frame = build_frame(player, TYPE_OF_BASIC_FRAME)
           build_throws(frame)
           build_steps(frame.throws)
         end
@@ -55,7 +58,7 @@ class Services::Games::PrepareBase
 
   def build_steps(throws)
     throws.each do |throw|
-      throw.create_step!(game:@game, position: @steps_counter)
+      throw.create_step!(game: @game, position: @steps_counter)
       increment_step_counter
     end
   end
