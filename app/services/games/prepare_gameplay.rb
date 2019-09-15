@@ -16,15 +16,17 @@ class Services::Games::PrepareGameplay
   private
 
   def build_gameplay
-    BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER.times do
-      @game.players.each do |player|
-        frame = build_frame(player)
-        build_throws(frame)
-        build_steps(frame.throws)
+    ActiveRecord::Base.transaction do
+      BASIC_AMOUNT_OF_FRAMES_FOR_SINGLE_PLAYER.times do
+        @game.players.each do |player|
+          frame = build_frame(player)
+          build_throws(frame)
+          build_steps(frame.throws)
+        end
+        increment_frame_counter
       end
-      increment_frame_counter
+      clear_frame_counter
     end
-    clear_frame_counter
   end
 
   def build_frame(player)
