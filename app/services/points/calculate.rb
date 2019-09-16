@@ -21,7 +21,6 @@ class Services::Points::Calculate
       elsif @throw.is_first_throw_in_frame?
         @point.update_status("on_hold", "waiting_for_result_of_second_throw")
       elsif @throw.is_second_throw_in_frame?
-
         if can_calculate_regular_case?(@point)
           raise WrongValueForSecondThrow if !@throw.valid_sum_of_throws?
           @point.update_status("calculated")
