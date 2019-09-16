@@ -1,7 +1,16 @@
 class GamesController < ApplicationController
 
+  before_action :set_game, only: [:show]
+  
+  def index
+    @games = Game.all
+  end
+
   def new
     @game = Game.new
+  end
+
+  def show
   end
 
   def create
@@ -19,6 +28,10 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def set_game
+    @game = Game.find(params[:id])
+  end
 
   def game_params
     params.require(:game).permit(:new_players)
