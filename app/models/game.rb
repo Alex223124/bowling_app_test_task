@@ -7,4 +7,8 @@ class Game < ApplicationRecord
     steps.where(is_completed: false, is_skipped: false).first
   end
 
+  def last_step
+    steps.last
+  end
+
 end
