@@ -2,14 +2,13 @@ class Step < ApplicationRecord
 
   belongs_to :game
   has_one :throw
-  has_one :point
 
 
   def next
     Step.where("game_id = ? AND position > ?", game.id, position).first
   end
 
-  def pervious
+  def previous
     Step.where("game_id = ? AND position < ?", game.id, position).last
   end
 
