@@ -1,4 +1,3 @@
-# A plain old ruby class inheriting from StandardError
 class LessThenTwoPlayers < StandardError
 
   attr_reader :message
