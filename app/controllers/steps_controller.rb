@@ -7,20 +7,19 @@ class StepsController < ApplicationController
     @step = @game.current_step
   end
 
-
   def update
     @update = Services::Steps::Update.new(@step, step_params)
     @update.call
 
-    if @step.frame.is_last_basic_frame?
-      @prepare_serivce = Services::Games::Gameplay::PrepareBonus.new(@step.frame)
-      @prepare_serivce.call
+    if @step == @step.game.last_step
+      flash[:success] = "Congratulations! Game is finished."
+      redirect_to action: :show, controller: :games, id: @step.game.id
+    else
+      flash[:success] = "Success! Time for next throw!"
+      redirect_to action: :current, game_id: @step.game.id
     end
-
-    flash[:success] = "Success!"
-    redirect_to action: :current, game_id: @step.game.id
   rescue => e
-    flash[:error] = "Something went wrong. Please, write your result again. Error: #{e}"
+    flash[:error] = "Something went wrong. Please, write your result again. Error: #{e.message}"
     redirect_to action: :current, game_id: @step.game.id
   end
 
