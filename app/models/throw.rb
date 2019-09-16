@@ -1,10 +1,25 @@
 class Throw < ApplicationRecord
 
   AMOUNT_OF_KNOCKED_DOWN_PINS_FOR_STRIKE = 10
-  SUM_OF_TWO_THROWS_FOR_SPARE = 1..9
+  SUM_OF_TWO_THROWS_FOR_SPARE = 10
+  MAX_KNOCKED_DOWN_PINS_BY_TWO_THROWES = 10
 
   belongs_to :frame
   belongs_to :step, optional: true
+
+  scope :completed_by_same_player, -> (throw) { where(frame_id: throw.frame.player.frames).
+                                                  where.not(number_of_knocked_down_pins: nil) }
+
+
+
+  def next_throws_completed?(amount)
+    Throw.completed_by_same_player(self).where("step_id > ?", self.step_id).count >= amount
+  end
+
+  def valid_sum_of_throws?
+    self.number_of_knocked_down_pins +
+    self.frame.throws.first.try(:number_of_knocked_down_pins) <= MAX_KNOCKED_DOWN_PINS_BY_TWO_THROWES
+  end
 
   def mark_throw_result(number_of_knocked_down_pins)
     self.number_of_knocked_down_pins = number_of_knocked_down_pins
@@ -32,19 +47,19 @@ class Throw < ApplicationRecord
   end
 
   def is_first_throw_in_frame?
-    frame == step.next.frame
+    frame == step.try(:next).try(:frame)
   end
 
   def is_second_throw_in_frame?
-    step.try(:pervious).try(:frame) == step.frame
+    step.try(:previous).try(:frame) == step.try(:frame)
   end
 
   def is_sum_for_spare_achieved?
-    sum_with_pervious_throw == SUM_OF_TWO_THROWS_FOR_SPARE
+    sum_with_previous_throw == SUM_OF_TWO_THROWS_FOR_SPARE
   end
 
-  def sum_with_pervious_throw
-    number_of_knocked_down_pins + step.pervious.throw.number_of_knocked_down_pins
+  def sum_with_previous_throw
+    number_of_knocked_down_pins + step.frame.throws.first.number_of_knocked_down_pins
   end
 
 end
