@@ -17,6 +17,23 @@
   <p><%=step.game.title %>
 
   <p>################################################
+  <br><h2>Current result</h2>
+    <%@step.game.players.each do |player| %>
+
+      <p>Player: <%=player.name%>
+      <% player.frames.each do |frame| %>
+      <p>Frame: <%=frame.number%> |
+      Result: <%= point_value(frame) %> | point id: <%= frame.point.id %>
+      First throw result: <%= throw_result(frame.throws.first) %> |
+      Second throw result: <%= throw_result(frame.throws.second) %> |
+      <% end %>
+    <br>----------------------------------------------------
+
+    <% end %>
+
+
+  <p>################################################
+  <br><h3>Current step</h3>
   <p>Player: <%=step.player.name%>
   <p>Frame: <%=step.frame.number %>
   <p>Throw: <% if step.throw.is_first_throw_in_frame? %>
