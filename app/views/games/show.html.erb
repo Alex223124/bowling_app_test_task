@@ -1,4 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_game_path(@game) %> |
+<p>################################################
+  <br><h2>Current result</h2>
+<%@game.players.each do |player| %>
+
+  <p>Player: <%=player.name%>
+    <% player.frames.each do |frame| %>
+    <p>Frame: <%=frame.number%> |
+      Result: <%= point_value(frame) %> | point id: <%= frame.point.id %>
+      First throw result: <%= throw_result(frame.throws.first) %> |
+      Second throw result: <%= throw_result(frame.throws.second) %> |
+  <% end %>
+  <br>----------------------------------------------------
+
+<% end %>
+
 <%= link_to 'Back', games_path %>
