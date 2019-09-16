@@ -4,12 +4,11 @@ class Services::Games::Gameplay::PrepareBase
   BASIC_AMOUNT_OF_THROWS_FOR_SINGLE_FRAME = 2
   TYPE_OF_BASIC_FRAME = "basic_ten_frames".freeze
   FIRST_STEP_POSITION = 1
-  FIRST_FRAME_NUMBER = 1
 
   def initialize(game)
     @game = game
     @steps_counter = FIRST_STEP_POSITION
-    @frames_counter = FIRST_FRAME_NUMBER
+    @frames_counter = Frame::FIRST_FRAME_NUMBER_FOR_PLAYER
   end
 
   def call
@@ -25,7 +24,7 @@ class Services::Games::Gameplay::PrepareBase
           frame = build_frame(player, TYPE_OF_BASIC_FRAME)
           build_throws(frame)
           build_steps(frame.throws)
-          frame.throws.each { |throw| build_points(throw.step) }
+          build_point(frame)
         end
         increment_frame_counter
       end
@@ -45,11 +44,11 @@ class Services::Games::Gameplay::PrepareBase
     @frames_counter = 0
   end
 
-  def build_points(step)
-    step.create_point!
-  end
-
   protected
+
+  def build_point(frame)
+    frame.create_point!
+  end
 
   def build_frame(player, type)
     player.frames.create!(type: type, number: @frames_counter)
